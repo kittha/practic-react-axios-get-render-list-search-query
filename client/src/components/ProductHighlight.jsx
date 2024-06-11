@@ -4,17 +4,18 @@ import { useState, useEffect } from "react";
 
 function ProductHighlight() {
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getProducts = async () => {
     const productDataFromServer = await axios.get(
-      "http://localhost:4000/products"
+      `http://localhost:4000/products?search=${searchQuery}`
     );
     setProducts(productDataFromServer.data);
   };
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <section className="bg-gray-200 py-8">
@@ -25,6 +26,8 @@ function ProductHighlight() {
             type="text"
             placeholder="Search products..."
             className="p-2 border border-gray-400 rounded"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
